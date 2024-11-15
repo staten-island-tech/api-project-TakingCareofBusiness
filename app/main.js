@@ -1,17 +1,12 @@
 import "./style.css";
-const URL = "https://libretranslate.com/translate";
+const URL = "https://fortnite-api.com/v2/cosmetics/br";
 async function getData(URL) {
-  const response = await fetch(URL);
-  console.log(response);
+  try {
+    const response = await fetch(URL);
+    const info = await response.json();
+    console.log(info.data[1]);
+  } catch (error) {
+    console.log(error);
+  }
 }
-const res = await fetch("https://libretranslate.com/translate", {
-  method: "POST",
-  body: JSON.stringify({
-    q: "Hello!",
-    source: "en",
-    target: "es",
-  }),
-  headers: { "Content-Type": "application/json" },
-});
-
-console.log(await res.json());
+getData(URL);
