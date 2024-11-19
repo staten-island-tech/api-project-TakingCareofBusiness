@@ -10,8 +10,6 @@ async function getData(URL) {
     const skins = Object.values(cosmetics.data).filter(
       (cosmetic) => cosmetic.type.displayValue === "Outfit"
     );
-
-    console.log(skins);
   } catch (error) {
     console.log(error);
   }
@@ -21,10 +19,10 @@ function createCard(array) {
   let x = 0;
   while (x < 20) {
     array.forEach(
-      (album) =>
+      (skin) =>
         DOMSelectors.cardContainer.insertAdjacentHTML(
           "beforeEnd",
-          `<div class="card"><div class="header-container"><h2>${album.name}</h2></div><img src=${album.cover} alt="${album.name} cover" class="card-image"><div class="info-container"><p class="card-artist">${album.artist}</p><p class="card-genre">Genre: ${album.genre}</p><p class="card-date"> Date Released: ${album.releaseDate}</p><p class="card-length"> Album Length: ${album.albumLength} minutes</p><p class="card-amount">Number of Songs: ${album.albumAmount}</p></div></div>`
+          `<div class="card"><div class="header-container"><h2>${skin[x].name}</h2></div><img src=${skin[x].images.icon} alt="${skin[x].name}'s Fortnite skin" class="card-image"><div class="info-container"><p class="skin-desc">${skin[x].description}</p><p class="skin-rarity">Skin rarity: ${skin[x].rarity.displayValue}</p><p class="skin-set">${skin[x].set.text}</p><p class="skin-release">${skin[x].introduction.text}</p></div></div>`
         ),
       (x += 1)
     );
