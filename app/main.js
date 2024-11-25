@@ -11,17 +11,25 @@ async function getData(URL) {
       (cosmetic) => cosmetic.type.displayValue === "Outfit"
     );
     console.log(skins);
-    createCard(skins);
+    createCard(skins, 0);
   } catch (error) {
     console.log(error);
   }
 }
 getData(URL);
-function createCard(array) {
+function createCard(array, limit) {
+  if (limit === 0) {
+    limit = 3000;
+  }
   let x = 0;
-  while (x < 2000) {
-    if (!(array[x].description === "TBD")) {
-      if (array[x].images.icon) {
+  while (x < limit) {
+    if (
+      !(array[x].description === "TBD") &&
+      !(array[x].name === "Stormfarer") &&
+      !(array[x].name === "Set_01_TA_SG") &&
+      !(array[x].name === "Set_01_LA_SG")
+    ) {
+      if (array[x].images.icon && array[x].introduction) {
         DOMSelectors.cardContainer.insertAdjacentHTML(
           "beforeEnd",
           `<div class="card w-[30%] bg-white mx-auto flex flex-wrap justify-evenly"><div class="header-container"><h2>${array[x].name}</h2></div><img src=${array[x].images.icon} alt="${array[x].name}'s Fortnite skin" class="card-image w-[90%]"><div class="info-container"><p class="skin-desc">${array[x].description}</p><p class="skin-rarity">Skin rarity: ${array[x].rarity.displayValue}</p><p class="skin-release">${array[x].introduction.text}</p></div></div>`
