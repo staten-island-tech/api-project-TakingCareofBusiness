@@ -28,15 +28,9 @@ function createCard(array) {
       !(array[x].description === "NPC")
     ) {
       if (array[x].images.icon && array[x].introduction) {
-        if (array[x].description.indexOf("Reactive") > -1) {
-          let splitThing = array[x].description.split("\\");
-          let descript = splitThing[0];
-        } else {
-          let descript = array[x].description;
-        }
         DOMSelectors.cardContainer.insertAdjacentHTML(
           "beforeEnd",
-          `<div class="card w-[30%] bg-white mx-auto flex flex-wrap justify-evenly"><div class="header-container"><h2>${array[x].name}</h2></div><img src=${array[x].images.icon} alt="${array[x].name}'s Fortnite skin" class="card-image w-[90%]"><div class="info-container"><p class="skin-desc">${descript}</p><p class="skin-rarity">Skin rarity: ${array[x].rarity.displayValue}</p><p class="skin-release">${array[x].introduction.text}</p></div></div>`
+          `<div class="card w-[30%] bg-white mx-auto flex flex-wrap justify-evenly"><div class="header-container"><h2>${array[x].name}</h2></div><img src=${array[x].images.icon} alt="${array[x].name}'s Fortnite skin" class="card-image w-[90%]"><div class="info-container"><p class="skin-desc">${array[x].description}</p><p class="skin-rarity">Skin rarity: ${array[x].rarity.displayValue}</p><p class="skin-release">${array[x].introduction.text}</p></div></div>`
         );
       }
       if (array[x].name === "Loveless") {
