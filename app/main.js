@@ -32,10 +32,10 @@ async function getData(URL) {
         );
         DOMSelectors.submit.addEventListener("click", function (event) {
           event.preventDefault();
-          DOMSelectors.inputContainer.reset();
-          DOMSelectors.cardContainer.innerHTML = "";
           let amount = document.getElementById("amount").value;
           console.log(amount);
+          DOMSelectors.inputContainer.reset();
+          DOMSelectors.cardContainer.innerHTML = "";
           createCard(newArray, amount);
         });
       }
@@ -70,7 +70,8 @@ function createCard(array, limit) {
     }
   }
 }
-function sortCardRarity(array) {
+getData(URL);
+/* function sortCardRarity(array) {
   DOMSelectors.rarityList.addEventListener("click", function (event) {
     let search = event.target.value;
     if (search === "All") {
@@ -84,9 +85,9 @@ function sortCardRarity(array) {
       return newArray;
     }
   });
-}
-function cardAmount(array) {
-  DOMSelectors.submit.addEventListener("click", function (event) {
+} */
+/* function cardAmount(array) {
+  DOMSelectors.submit.addEventListener("submit", function (event) {
     event.preventDefault();
     console.log("hi");
     DOMSelectors.inputContainer.reset();
@@ -94,5 +95,4 @@ function cardAmount(array) {
     let amount = DOMSelectors.cardAmount.value;
     createCard(array, amount);
   });
-}
-getData(URL);
+} */
