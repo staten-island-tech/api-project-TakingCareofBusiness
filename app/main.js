@@ -11,6 +11,7 @@ async function getData(URL) {
     const skins = Object.values(cosmetics.data).filter(
       (cosmetic) => cosmetic.type.displayValue === "Outfit"
     );
+    console.log(skins);
     createCard(skins);
     sortCardRarity(skins);
   } catch (error) {
@@ -31,7 +32,7 @@ function createCard(array) {
       if (array[x].images.icon && array[x].introduction) {
         DOMSelectors.cardContainer.insertAdjacentHTML(
           "beforeEnd",
-          `<div class="card w-[30%] bg-white mx-auto flex flex-wrap justify-evenly"><div class="header-container"><h2>${array[x].name}</h2></div><img src=${array[x].images.icon} alt="${array[x].name}'s Fortnite skin" class="card-image w-[90%]"><div class="info-container"><p class="skin-desc">${array[x].description}</p><p class="skin-rarity">Skin rarity: ${array[x].rarity.displayValue}</p><p class="skin-release">${array[x].introduction.text}</p></div></div>`
+          `<div class="card w-[30%] bg-white mx-auto flex flex-wrap content-center justify-evenly"><div class="header-container"><h2 class="title text-center">${array[x].name}</h2></div><img src=${array[x].images.icon} alt="${array[x].name}'s Fortnite skin" class="card-image w-[90%]"><div class="info-container"><p class="skin-desc">${array[x].description}</p><p class="skin-rarity">Skin rarity: ${array[x].rarity.displayValue}</p><p class="skin-release">${array[x].introduction.text}</p></div></div>`
         );
       }
       if (array[x].name === "Loveless") {
