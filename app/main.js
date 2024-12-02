@@ -10,11 +10,18 @@ const DOMSelectors = {
 };
 async function getData(URL) {
   try {
+    let human = false;
+    let car = false;
     const response = await fetch(URL);
     const cosmetics = await response.json();
     const skins = Object.values(cosmetics.data).filter(
       (cosmetic) => cosmetic.type.displayValue === "Outfit"
     );
+    if (skins[0].name === "Solid Snake") {
+      human = true;
+    } else {
+      car = true;
+    }
     createCard(skins, 100);
     sortCards(skins);
   } catch (error) {
@@ -48,10 +55,11 @@ function createCard(array, limit) {
 function sortCards(array) {
   DOMSelectors.submit.addEventListener("click", function (event) {
     event.preventDefault();
-    let amount = DOMSelectors.cardAmount.value;
     DOMSelectors.inputContainer.reset();
   });
   DOMSelectors.rarityList.addEventListener("click", function (event) {
+    let human = true;
+    let car = true;
     let search = event.target.value;
     let newArray;
     if (search === "All") {
