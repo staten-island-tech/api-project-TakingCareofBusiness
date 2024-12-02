@@ -7,8 +7,9 @@
     <title>Vite App</title>
   </head>
   <body class="body bg-[#69e0fe] content-center text-black">
-    <form action="" class="form w-[95%] h-[20rem] bg-[#2494dc] mx-auto flex flex-row content-center justify-evenly">
-      <select class="rarity-select bg-white h-[10%]" name="" id="">
+    <form action="" class="form w-[95%]  bg-[#2494dc] mx-auto flex flex-row content-center justify-evenly items-center h-[6rem] md:h-[8rem] lg:h-[12rem] xl:h-[16rem]">
+      <input class="cardAmount bg-white" type="text">
+      <select class="rarity-select bg-white h-[20%] align-middle" name="" id="">
         <option value="All">All rarities</option>
         <option value="Common">Common</option>
         <option value="Uncommon">Uncommon</option>
@@ -27,7 +28,7 @@
         <option value="Icon Series">Icon Series</option>
       </select>
     </form>
-    <div class="card-container w-[95%] flex flex-row flex-wrap gap-y-[6rem] mx-auto " ></div>
+    <div class="card-container w-[95%] flex flex-row flex-wrap mx-auto gap-y-[1rem] md:gap-y-[2rem] lg:gap-y-[2rem] xl:gap-y-[6rem]" ></div>
     <script type="module" src="/main.js"></script>
   </body>
 </html>

@@ -2,7 +2,7 @@ import "./style.css";
 const URL = "https://fortnite-api.com/v2/cosmetics/br";
 const DOMSelectors = {
   cardContainer: document.querySelector(".card-container"),
-  buttonContainer: document.querySelector(".form"),
+  rarityList: document.querySelector(".rarity-select"),
 };
 async function getData(URL) {
   try {
@@ -32,7 +32,7 @@ function createCard(array) {
       if (array[x].images.icon && array[x].introduction) {
         DOMSelectors.cardContainer.insertAdjacentHTML(
           "beforeEnd",
-          `<div class="card w-[30%] bg-white mx-auto flex flex-wrap content-center justify-evenly"><div class="header-container"><h2 class="title text-center">${array[x].name}</h2></div><img src=${array[x].images.icon} alt="${array[x].name}'s Fortnite skin" class="card-image w-[90%]"><div class="info-container"><p class="skin-desc">${array[x].description}</p><p class="skin-rarity">Skin rarity: ${array[x].rarity.displayValue}</p><p class="skin-release">${array[x].introduction.text}</p></div></div>`
+          `<div class="card w-[30%] bg-white mx-auto flex flex-wrap content-center justify-evenly"><div class="header-container"><h2 class="title text-center text-[1rem] md:text-[1.1rem] lg:text-[1.4rem] xl:text-[1.8rem]">${array[x].name}</h2></div><img src=${array[x].images.icon} alt="${array[x].name}'s Fortnite skin" class="card-image w-[90%]"><div class="info-container text-[0.52rem] md:text-[0.65rem] lg:text-[0.8rem] xl:text-[1.2rem]"><p class="skin-desc">${array[x].description}</p><p class="skin-rarity">Skin rarity: ${array[x].rarity.displayValue}</p><p class="skin-release">${array[x].introduction.text}</p></div></div>`
         );
       }
       if (array[x].name === "Loveless") {
@@ -46,7 +46,7 @@ function createCard(array) {
 }
 async function sortCardRarity(array) {
   try {
-    DOMSelectors.buttonContainer.addEventListener("click", function (event) {
+    DOMSelectors.rarityList.addEventListener("click", function (event) {
       DOMSelectors.cardContainer.innerHTML = "";
       let search = event.target.value;
       console.log(search);
@@ -64,3 +64,5 @@ async function sortCardRarity(array) {
     console.log(error);
   }
 }
+//text-[1rem] md:text-[1rem] lg:text-[1.4rem] xl:text-[1.8rem]
+``;
