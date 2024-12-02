@@ -2,7 +2,7 @@ import "./style.css";
 const URL = "https://fortnite-api.com/v2/cosmetics/br";
 const DOMSelectors = {
   cardContainer: document.querySelector(".card-container"),
-  buttonContainer: document.querySelector(".button-container"),
+  buttonContainer: document.querySelector(".form"),
 };
 async function getData(URL) {
   try {
@@ -11,8 +11,8 @@ async function getData(URL) {
     const skins = Object.values(cosmetics.data).filter(
       (cosmetic) => cosmetic.type.displayValue === "Outfit"
     );
-    console.log(skins);
     createCard(skins);
+    sortCardRarity(skins);
   } catch (error) {
     console.log(error);
   }
@@ -38,30 +38,28 @@ function createCard(array) {
         x = array.length;
       }
       x += 1;
-      console.log(array[x]);
     } else {
       x += 1;
     }
   }
 }
-async function sortCardRarity() {
+async function sortCardRarity(array) {
   try {
-    const response = await fetch(URL);
-    const cosmetics = await response.json();
-    const skins = Object.values(cosmetics.data).filter(
-      (cosmetic) => cosmetic.type.displayValue === "Outfit"
-    );
     DOMSelectors.buttonContainer.addEventListener("click", function (event) {
       DOMSelectors.cardContainer.innerHTML = "";
       let search = event.target.value;
-      let newArray = Object.values(skins).filter(
-        (skin) => skin.rarity.displayValue === search
-      );
-      console.log(newArray);
-      createCard(newArray);
+      console.log(search);
+      if (search === "All") {
+        createCard(array);
+      } else {
+        let newArray = Object.values(array).filter(
+          (skin) => skin.rarity.displayValue === search
+        );
+        console.log(newArray);
+        createCard(newArray);
+      }
     });
   } catch (error) {
     console.log(error);
   }
 }
-sortCardRarity();
