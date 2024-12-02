@@ -2,7 +2,10 @@ import "./style.css";
 const URL = "https://fortnite-api.com/v2/cosmetics/br";
 const DOMSelectors = {
   cardContainer: document.querySelector(".card-container"),
+  inputContainer: document.querySelector(".form"),
   rarityList: document.querySelector(".rarity-select"),
+  cardAmount: document.querySelector(".card-amount"),
+  submit: document.querySelector(".submit-button"),
 };
 async function getData(URL) {
   try {
@@ -11,16 +14,13 @@ async function getData(URL) {
     const skins = Object.values(cosmetics.data).filter(
       (cosmetic) => cosmetic.type.displayValue === "Outfit"
     );
-    console.log(skins);
-    createCard(skins);
-    sortCardRarity(skins);
+    createCard(skins, 0);
   } catch (error) {
     console.log(error);
   }
 }
 getData(URL);
-function createCard(array) {
-  let x = 0;
+function createCard(array, x) {
   while (x <= array.length) {
     if (
       !(array[x].description === "TBD") &&
@@ -44,25 +44,46 @@ function createCard(array) {
     }
   }
 }
-async function sortCardRarity(array) {
-  try {
-    DOMSelectors.rarityList.addEventListener("click", function (event) {
-      DOMSelectors.cardContainer.innerHTML = "";
-      let search = event.target.value;
-      console.log(search);
-      if (search === "All") {
-        createCard(array);
-      } else {
-        let newArray = Object.values(array).filter(
-          (skin) => skin.rarity.displayValue === search
-        );
-        console.log(newArray);
-        createCard(newArray);
-      }
-    });
-  } catch (error) {
-    console.log(error);
-  }
+function sortCardRarity(array) {
+  DOMSelectors.rarityList.addEventListener("click", function (event) {
+    let search = event.target.value;
+    if (search === "All") {
+      let newArray = array;
+      return newArray;
+    } else {
+      let newArray = Object.values(array).filter(
+        (skin) => skin.rarity.displayValue === search
+      );
+      return newArray;
+    }
+  });
 }
-//text-[1rem] md:text-[1rem] lg:text-[1.4rem] xl:text-[1.8rem]
-``;
+async function cardAmount() {
+  const response = await fetch(URL);
+  const cosmetics = await response.json();
+  const skins = Object.values(cosmetics.data).filter(
+    (cosmetic) => cosmetic.type.displayValue === "Outfit"
+  );
+  DOMSelectors.rarityList.addEventListener("click", function (event) {
+    let all = false;
+    let other = false;
+    let search = event.target.value;
+    if (search === "All") {
+      let array = skins;
+    } else {
+      let array = Object.values(skins).filter(
+        (skin) => skin.rarity.displayValue === search
+      );
+    }
+  });
+  console.log(array);
+  DOMSelectors.submit.addEventListener("click", function (event) {
+    event.preventDefault();
+    console.log("hi");
+    DOMSelectors.inputContainer.reset();
+    DOMSelectors.cardContainer.innerHTML = "";
+    let amount = DOMSelectors.cardAmount.value;
+    createCard(array, amount);
+  });
+}
+cardAmount();
