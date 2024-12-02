@@ -2,6 +2,7 @@ import "./style.css";
 const URL = "https://fortnite-api.com/v2/cosmetics/br";
 const DOMSelectors = {
   cardContainer: document.querySelector(".card-container"),
+  buttonContainer: document.querySelector(".button-container"),
 };
 async function getData(URL) {
   try {
@@ -43,3 +44,24 @@ function createCard(array) {
     }
   }
 }
+async function sortCardRarity() {
+  try {
+    const response = await fetch(URL);
+    const cosmetics = await response.json();
+    const skins = Object.values(cosmetics.data).filter(
+      (cosmetic) => cosmetic.type.displayValue === "Outfit"
+    );
+    DOMSelectors.buttonContainer.addEventListener("click", function (event) {
+      DOMSelectors.cardContainer.innerHTML = "";
+      let search = event.target.value;
+      let newArray = Object.values(skins).filter(
+        (skin) => skin.rarity.displayValue === search
+      );
+      console.log(newArray);
+      createCard(newArray);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+sortCardRarity();
