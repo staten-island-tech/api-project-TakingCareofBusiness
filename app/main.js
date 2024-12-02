@@ -15,47 +15,41 @@ async function getData(URL) {
       (cosmetic) => cosmetic.type.displayValue === "Outfit"
     );
     createCard(skins, 100);
+    DOMSelectors.submit.addEventListener("click", function (event) {
+      event.preventDefault();
+      let amount = DOMSelectors.cardAmount.value;
+      DOMSelectors.inputContainer.reset();
+    });
     DOMSelectors.rarityList.addEventListener("click", function (event) {
       let search = event.target.value;
+      let newArray;
       if (search === "All") {
-        let newArray = skins;
-        DOMSelectors.submit.addEventListener("click", function (event) {
-          event.preventDefault();
-          DOMSelectors.inputContainer.reset();
-          DOMSelectors.cardContainer.innerHTML = "";
-          let amount = DOMSelectors.cardAmount.value;
-          createCard(newArray, amount);
-        });
+        newArray = skins;
       } else {
-        let newArray = Object.values(skins).filter(
-          (skin) => skin.rarity.displayValue === search
-        );
-        DOMSelectors.submit.addEventListener("click", function (event) {
-          event.preventDefault();
-          let amount = document.getElementById("amount").value;
-          console.log(amount);
-          DOMSelectors.inputContainer.reset();
-          DOMSelectors.cardContainer.innerHTML = "";
-          createCard(newArray, amount);
-        });
+        newArray = skins.filter((skin) => skin.rarity.displayValue === search);
       }
+      let amount = DOMSelectors.cardAmount.value;
+      DOMSelectors.cardContainer.innerHTML = "";
+      createCard(newArray, amount);
     });
   } catch (error) {
     console.log(error);
   }
 }
+
 function createCard(array, limit) {
   console.log(array);
-  for (let i = 0; i <= limit; i++) {
+  for (let i = 0; i < limit; i++) {
     console.log(array[i]);
-    console.log(limit);
     if (
-      !(array[i].description === "TBD") &&
-      !(array[i].name === "Stormfarer") &&
-      !(array[i].name === "Set_01_TA_SG") &&
-      !(array[i].name === "Set_01_LA_SG") &&
-      !(array[i].description === "NPC")
+      array[i].description === "TBD" ||
+      array[i].name === "Stormfarer" ||
+      array[i].name === "Set_01_TA_SG" ||
+      array[i].name === "Set_01_LA_SG" ||
+      array[i].description === "NPC"
     ) {
+      i += 1;
+    } else {
       if (array[i].images.icon && array[i].introduction) {
         DOMSelectors.cardContainer.insertAdjacentHTML(
           "beforeEnd",
@@ -65,8 +59,6 @@ function createCard(array, limit) {
       if (array[i].name === "Loveless") {
         i = limit;
       }
-    } else {
-      i += 1;
     }
   }
 }
@@ -96,3 +88,28 @@ getData(URL);
     createCard(array, amount);
   });
 } */
+/* DOMSelectors.rarityList.addEventListener("click", function (event) {
+    let search = event.target.value;
+    if (search === "All") {
+      let newArray = skins;
+      DOMSelectors.submit.addEventListener("click", function (event) {
+        event.preventDefault();
+        DOMSelectors.inputContainer.reset();
+        DOMSelectors.cardContainer.innerHTML = "";
+        let amount = DOMSelectors.cardAmount.value;
+        createCard(newArray, amount);
+      });
+    } else {
+      let newArray = Object.values(skins).filter(
+        (skin) => skin.rarity.displayValue === search
+      );
+      DOMSelectors.submit.addEventListener("click", function (event) {
+        event.preventDefault();
+        let amount = document.getElementById("amount").value;
+        console.log(amount);
+        DOMSelectors.inputContainer.reset();
+        DOMSelectors.cardContainer.innerHTML = "";
+        createCard(newArray, amount);
+      });
+    }
+  }); */
