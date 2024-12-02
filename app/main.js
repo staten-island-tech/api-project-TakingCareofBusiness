@@ -14,33 +14,59 @@ async function getData(URL) {
     const skins = Object.values(cosmetics.data).filter(
       (cosmetic) => cosmetic.type.displayValue === "Outfit"
     );
-    createCard(skins, 0);
+    createCard(skins, 100);
+    DOMSelectors.rarityList.addEventListener("click", function (event) {
+      let search = event.target.value;
+      if (search === "All") {
+        let newArray = skins;
+        DOMSelectors.submit.addEventListener("click", function (event) {
+          event.preventDefault();
+          DOMSelectors.inputContainer.reset();
+          DOMSelectors.cardContainer.innerHTML = "";
+          let amount = DOMSelectors.cardAmount.value;
+          createCard(newArray, amount);
+        });
+      } else {
+        let newArray = Object.values(skins).filter(
+          (skin) => skin.rarity.displayValue === search
+        );
+        DOMSelectors.submit.addEventListener("click", function (event) {
+          event.preventDefault();
+          DOMSelectors.inputContainer.reset();
+          DOMSelectors.cardContainer.innerHTML = "";
+          let amount = document.getElementById("amount").value;
+          console.log(amount);
+          createCard(newArray, amount);
+        });
+      }
+    });
   } catch (error) {
     console.log(error);
   }
 }
-getData(URL);
-function createCard(array, x) {
-  while (x <= array.length) {
+function createCard(array, limit) {
+  console.log(array);
+  for (let i = 0; i <= limit; i++) {
+    console.log(array[i]);
+    console.log(limit);
     if (
-      !(array[x].description === "TBD") &&
-      !(array[x].name === "Stormfarer") &&
-      !(array[x].name === "Set_01_TA_SG") &&
-      !(array[x].name === "Set_01_LA_SG") &&
-      !(array[x].description === "NPC")
+      !(array[i].description === "TBD") &&
+      !(array[i].name === "Stormfarer") &&
+      !(array[i].name === "Set_01_TA_SG") &&
+      !(array[i].name === "Set_01_LA_SG") &&
+      !(array[i].description === "NPC")
     ) {
-      if (array[x].images.icon && array[x].introduction) {
+      if (array[i].images.icon && array[i].introduction) {
         DOMSelectors.cardContainer.insertAdjacentHTML(
           "beforeEnd",
-          `<div class="card w-[30%] bg-white mx-auto flex flex-wrap content-center justify-evenly"><div class="header-container"><h2 class="title text-center text-[1rem] md:text-[1.1rem] lg:text-[1.4rem] xl:text-[1.8rem]">${array[x].name}</h2></div><img src=${array[x].images.icon} alt="${array[x].name}'s Fortnite skin" class="card-image w-[90%]"><div class="info-container text-[0.52rem] md:text-[0.65rem] lg:text-[0.8rem] xl:text-[1.2rem]"><p class="skin-desc">${array[x].description}</p><p class="skin-rarity">Skin rarity: ${array[x].rarity.displayValue}</p><p class="skin-release">${array[x].introduction.text}</p></div></div>`
+          `<div class="card w-[30%] bg-white mx-auto flex flex-wrap content-center justify-evenly"><div class="header-container"><h2 class="title text-center text-[1rem] md:text-[1.1rem] lg:text-[1.4rem] xl:text-[1.8rem]">${array[i].name}</h2></div><img src=${array[i].images.icon} alt="${array[i].name}'s Fortnite skin" class="card-image w-[90%]"><div class="info-container text-[0.52rem] md:text-[0.65rem] lg:text-[0.8rem] xl:text-[1.2rem]"><p class="skin-desc">${array[i].description}</p><p class="skin-rarity">Skin rarity: ${array[i].rarity.displayValue}</p><p class="skin-release">${array[i].introduction.text}</p></div></div>`
         );
       }
-      if (array[x].name === "Loveless") {
-        x = array.length;
+      if (array[i].name === "Loveless") {
+        i = limit;
       }
-      x += 1;
     } else {
-      x += 1;
+      i += 1;
     }
   }
 }
@@ -54,29 +80,12 @@ function sortCardRarity(array) {
       let newArray = Object.values(array).filter(
         (skin) => skin.rarity.displayValue === search
       );
+      console.log(newArray);
       return newArray;
     }
   });
 }
-async function cardAmount() {
-  const response = await fetch(URL);
-  const cosmetics = await response.json();
-  const skins = Object.values(cosmetics.data).filter(
-    (cosmetic) => cosmetic.type.displayValue === "Outfit"
-  );
-  DOMSelectors.rarityList.addEventListener("click", function (event) {
-    let all = false;
-    let other = false;
-    let search = event.target.value;
-    if (search === "All") {
-      let array = skins;
-    } else {
-      let array = Object.values(skins).filter(
-        (skin) => skin.rarity.displayValue === search
-      );
-    }
-  });
-  console.log(array);
+function cardAmount(array) {
   DOMSelectors.submit.addEventListener("click", function (event) {
     event.preventDefault();
     console.log("hi");
@@ -86,4 +95,4 @@ async function cardAmount() {
     createCard(array, amount);
   });
 }
-cardAmount();
+getData(URL);
