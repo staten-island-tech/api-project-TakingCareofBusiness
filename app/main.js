@@ -55,7 +55,6 @@ function createCard(array, limit, type) {
       array[i].description === "NPC"
     ) {
       i += 1;
-      limit += 1;
     } else {
       if (type === "skins") {
         if (array[i].images.icon && array[i].introduction) {
