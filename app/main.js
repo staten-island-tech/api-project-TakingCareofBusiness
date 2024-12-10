@@ -28,14 +28,21 @@ async function getData(URL, otherURL) {
     createCard(skins, 100, "skins");
     DOMSelectors.typeButtons.addEventListener("click", function (event) {
       let type = event.target.value;
-      if (type === "Cars" && car === false) {
+      if (type === "Cars") {
         skins = Object.values(cosmeticsCar.data).filter(
           (cosmetic) => cosmetic.type.displayValue === "Body"
         );
         DOMSelectors.cardContainer.innerHTML = "";
         createCard(skins, 25, "cars");
         sortCards(skins, "cars");
-      } else {
+        car = true;
+      }
+      if (type === "Skins") {
+        skins = Object.values(cosmeticsSkin.data).filter(
+          (cosmetic) => cosmetic.type.displayValue === "Outfit"
+        );
+        DOMSelectors.cardContainer.innerHTML = "";
+        createCard(skins, 100, "skins");
         sortCards(skins, "skins");
       }
     });
