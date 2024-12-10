@@ -11,8 +11,6 @@ const DOMSelectors = {
 };
 async function getData(URL, otherURL) {
   try {
-    let human = false;
-    let car = false;
     const response1 = await fetch(URL);
     const cosmeticsSkin = await response1.json();
     const response2 = await fetch(carURL);
@@ -20,11 +18,6 @@ async function getData(URL, otherURL) {
     let skins = Object.values(cosmeticsSkin.data).filter(
       (cosmetic) => cosmetic.type.displayValue === "Outfit"
     );
-    if (skins[0].name === "Solid Snake") {
-      human = true;
-    } else {
-      car = true;
-    }
     createCard(skins, 100, "skins");
     DOMSelectors.typeButtons.addEventListener("click", function (event) {
       let type = event.target.value;
@@ -35,7 +28,6 @@ async function getData(URL, otherURL) {
         DOMSelectors.cardContainer.innerHTML = "";
         createCard(skins, 25, "cars");
         sortCards(skins, "cars");
-        car = true;
       }
       if (type === "Skins") {
         skins = Object.values(cosmeticsSkin.data).filter(
