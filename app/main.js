@@ -7,14 +7,17 @@ const DOMSelectors = {
   rarityList: document.querySelector(".rarity-select"),
   cardAmount: document.querySelector(".card-amount"),
   submit: document.querySelector(".submit-button"),
+  typeButtons: document.querySelector(".category-button"),
 };
-async function getData(URL) {
+async function getData(URL, otherURL) {
   try {
     let human = false;
     let car = false;
-    const response = await fetch(URL);
-    const cosmetics = await response.json();
-    const skins = Object.values(cosmetics.data).filter(
+    const response1 = await fetch(URL);
+    const cosmeticsSkin = await response1.json();
+    const response2 = await fetch(carURL);
+    const cosmeticsCar = await response2.json();
+    let skins = Object.values(cosmeticsSkin.data).filter(
       (cosmetic) => cosmetic.type.displayValue === "Outfit"
     );
     if (skins[0].name === "Solid Snake") {
@@ -22,15 +25,29 @@ async function getData(URL) {
     } else {
       car = true;
     }
-    createCard(skins, 100);
-    sortCards(skins);
+    createCard(skins, 100, "skins");
+    DOMSelectors.typeButtons.addEventListener("click", function (event) {
+      let type = event.target.value;
+      if (type === "Cars" && car === false) {
+        skins = Object.values(cosmeticsCar.data).filter(
+          (cosmetic) => cosmetic.type.displayValue === "Body"
+        );
+        DOMSelectors.cardContainer.innerHTML = "";
+        createCard(skins, 25, "cars");
+        sortCards(skins, "cars");
+      } else {
+        sortCards(skins, "skins");
+      }
+    });
+    sortCards(skins, "skins");
   } catch (error) {
     console.log(error);
   }
 }
 
-function createCard(array, limit) {
+function createCard(array, limit, type) {
   for (let i = 0; i < limit; i++) {
+    console.log(array[i]);
     if (
       array[i].description === "TBD" ||
       array[i].name === "Stormfarer" ||
@@ -39,27 +56,42 @@ function createCard(array, limit) {
       array[i].description === "NPC"
     ) {
       i += 1;
+      limit += 1;
     } else {
-      if (array[i].images.icon && array[i].introduction) {
-        DOMSelectors.cardContainer.insertAdjacentHTML(
-          "beforeEnd",
-          `<div class="card w-[30%] bg-white mx-auto flex flex-wrap content-center justify-evenly"><div class="header-container"><h2 class="title text-center text-[1rem] md:text-[1.1rem] lg:text-[1.4rem] xl:text-[1.8rem]">${array[i].name}</h2></div><img src=${array[i].images.icon} alt="${array[i].name}'s Fortnite skin" class="card-image w-[90%]"><div class="info-container text-[0.52rem] md:text-[0.65rem] lg:text-[0.8rem] xl:text-[1.2rem]"><p class="skin-desc">${array[i].description}</p><p class="skin-rarity">Skin rarity: ${array[i].rarity.displayValue}</p><p class="skin-release">${array[i].introduction.text}</p></div></div>`
-        );
+      if (type === "skins") {
+        if (array[i].images.icon && array[i].introduction) {
+          DOMSelectors.cardContainer.insertAdjacentHTML(
+            "beforeEnd",
+            `<div class="card w-[30%] bg-white mx-auto flex flex-wrap content-center justify-evenly"><div class="header-container"><h2 class="title text-center text-[1rem] md:text-[1.1rem] lg:text-[1.4rem] xl:text-[1.8rem]">${array[i].name}</h2></div><img src=${array[i].images.icon} alt="${array[i].name}'s Fortnite skin" class="card-image w-[90%]"><div class="info-container text-[0.52rem] md:text-[0.65rem] lg:text-[0.8rem] xl:text-[1.2rem]"><p class="skin-desc">${array[i].description}</p><p class="skin-rarity">Skin rarity: ${array[i].rarity.displayValue}</p><p class="skin-release">${array[i].introduction.text}</p></div></div>`
+          );
+        }
+        if (array[i].name === "Loveless") {
+          i = limit;
+        }
       }
-      if (array[i].name === "Loveless") {
-        i = limit;
+      if (type === "cars") {
+        if (array[i].images.large) {
+          DOMSelectors.cardContainer.insertAdjacentHTML(
+            "beforeEnd",
+            `<div class="card w-[30%] bg-white mx-auto flex flex-wrap content-center justify-evenly"><div class="header-container"><h2 class="title text-center text-[1rem] md:text-[1.1rem] lg:text-[1.4rem] xl:text-[1.8rem]">${array[i].name}</h2></div><img src=${array[i].images.large} alt="${array[i].name}'s Fortnite skin" class="card-image w-[90%]"><div class="info-container text-[0.52rem] md:text-[0.65rem] lg:text-[0.8rem] xl:text-[1.2rem]"><p class="skin-desc">${array[i].description}</p><p class="skin-rarity">Skin rarity: ${array[i].rarity.displayValue}</p></div></div>`
+          );
+        }
       }
     }
   }
 }
-function sortCards(array) {
+function sortCards(array, type) {
+  if (type === "cars") {
+    var selectObject = DOMSelectors.rarityList;
+    for (var i = 0; i < selectObject.length; i++) {
+      if (selectObject.options[i].value === "Legendary") selectObject.remove(i);
+    }
+  }
   DOMSelectors.submit.addEventListener("click", function (event) {
     event.preventDefault();
     DOMSelectors.inputContainer.reset();
   });
   DOMSelectors.rarityList.addEventListener("click", function (event) {
-    let human = true;
-    let car = true;
     let search = event.target.value;
     let newArray;
     if (search === "All") {
@@ -69,7 +101,7 @@ function sortCards(array) {
     }
     let amount = DOMSelectors.cardAmount.value;
     DOMSelectors.cardContainer.innerHTML = "";
-    createCard(newArray, amount);
+    createCard(newArray, amount, type);
   });
 }
-getData(skinURL);
+getData(skinURL, carURL);
