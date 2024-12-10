@@ -47,7 +47,6 @@ async function getData(URL, otherURL) {
 
 function createCard(array, limit, type) {
   for (let i = 0; i < limit; i++) {
-    console.log(array[i]);
     if (
       array[i].description === "TBD" ||
       array[i].name === "Stormfarer" ||
