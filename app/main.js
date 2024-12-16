@@ -13,7 +13,7 @@ async function getData(URL, otherURL) {
   try {
     const response1 = await fetch(URL);
     const cosmeticsSkin = await response1.json();
-    const response2 = await fetch(carURL);
+    const response2 = await fetch(otherURL);
     const cosmeticsCar = await response2.json();
     let skins = Object.values(cosmeticsSkin.data).filter(
       (cosmetic) => cosmetic.type.displayValue === "Outfit"
